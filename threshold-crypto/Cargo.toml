@@ -1,0 +1,20 @@
+[package]
+name = "threshold-crypto"
+version = "0.1.0"
+authors = ["Hiroki Tanaka <support@sencoinex.com>"]
+license = "MIT"
+repository = "https://github.com/sencoinex/honey-badger-bft-rs"
+edition = "2021"
+
+[dependencies]
+anyhow = { version = "1.0", features = ["backtrace"] }
+thiserror = "1.0"
+hex_fmt = "0.3.0"
+bls12_381 = { version ="0.7.1", features = ["zeroize"] }
+group = { version = "0.12" }
+zeroize = "1.5.7"
+tiny-keccak = { version = "2.0.2", features = ["sha3"]}
+rand_chacha = "0.3.1"
+rand = "0.8.5"
+
+[dev-dependencies]

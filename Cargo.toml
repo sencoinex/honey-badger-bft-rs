@@ -1,0 +1,17 @@
+[workspace]
+
+members = [
+    # "asynchronous-common-subset",
+    # "reliable-broadcast",
+    # "binary-agreement",
+    "threshold-crypto",
+]
+
+[profile.dev]
+debug = true
+
+[profile.release]
+debug = false
+
+[profile.bench]
+debug = false
