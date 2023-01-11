@@ -15,6 +15,4 @@ byteorder = "1.4.3"
 reed-solomon-erasure = "6.0.0"
 
 [dev-dependencies]
-tokio = { version = "1", features = ["full"] }
-futures = "0.3"
 logger = { version = "0.1.0", git = "https://github.com/kumanote/logger-rs", branch = "main", features = ["airbrake"] }
