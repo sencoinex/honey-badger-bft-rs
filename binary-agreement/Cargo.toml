@@ -1,0 +1,18 @@
+[package]
+name = "binary-agreement"
+version = "0.1.0"
+authors = ["Hiroki Tanaka <support@sencoinex.com>"]
+license = "MIT"
+repository = "https://github.com/sencoinex/honey-badger-bft-rs"
+edition = "2021"
+
+[dependencies]
+anyhow = { version = "1.0", features = ["backtrace"] }
+thiserror = "1.0"
+bincode = "1.3.3"
+
+threshold-crypto = { path = "../threshold-crypto" }
+
+[dev-dependencies]
+rand = "0.8.5"
+logger = { version = "0.1.0", git = "https://github.com/kumanote/logger-rs", branch = "main", features = ["airbrake"] }

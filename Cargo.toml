@@ -3,7 +3,7 @@
 members = [
     # "asynchronous-common-subset",
     "reliable-broadcast",
-    # "binary-agreement",
+    "binary-agreement",
     "threshold-crypto",
 ]
 
