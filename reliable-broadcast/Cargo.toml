@@ -1,0 +1,20 @@
+[package]
+name = "reliable-broadcast"
+version = "0.1.0"
+authors = ["Hiroki Tanaka <support@sencoinex.com>"]
+license = "MIT"
+repository = "https://github.com/sencoinex/honey-badger-bft-rs"
+edition = "2021"
+
+[dependencies]
+anyhow = { version = "1.0", features = ["backtrace"] }
+thiserror = "1.0"
+hex_fmt = "0.3"
+tiny-keccak = { version = "2.0.2", features = ["sha3"]}
+byteorder = "1.4.3"
+reed-solomon-erasure = "6.0.0"
+
+[dev-dependencies]
+tokio = { version = "1", features = ["full"] }
+futures = "0.3"
+logger = { version = "0.1.0", git = "https://github.com/kumanote/logger-rs", branch = "main", features = ["airbrake"] }

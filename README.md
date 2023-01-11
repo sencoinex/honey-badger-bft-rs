@@ -1,6 +1,6 @@
 # About this project
 
-This repository contains a Rust implementation of "[The Honey Badger of BFT Protocols]([199.pdf](https://eprint.iacr.org/2016/199.pdf))".
+This repository contains a Rust implementation of "[The Honey Badger of BFT Protocols](https://eprint.iacr.org/2016/199.pdf)".
 
 # 🚧 WARNING: UNDER CONSTRUCTION 🚧
 
