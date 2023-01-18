@@ -96,4 +96,8 @@ impl<ID: NodeId, IDX: ValidatorIndex> ReliableBroadcastState<ID, IDX> {
     pub fn get_output(&self) -> Option<&Vec<u8>> {
         self.output.as_ref()
     }
+
+    pub fn into_output_and_logs(self) -> (Option<Vec<u8>>, Vec<FaultLog<ID>>) {
+        (self.output, self.fault_logs)
+    }
 }

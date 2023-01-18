@@ -221,4 +221,8 @@ impl<NID: NodeId, IDX: ValidatorIndex, SID: SessionId> BinaryAgreementState<NID,
     pub fn get_output(&self) -> Option<bool> {
         self.output
     }
+
+    pub fn into_output_and_logs(self) -> (Option<bool>, Vec<FaultLog<NID>>) {
+        (self.output, self.fault_logs)
+    }
 }

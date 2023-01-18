@@ -1,6 +1,6 @@
 use crate::merkle::{Digest, Proof};
 
-#[derive(Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq)]
 pub enum BroadcastMessage {
     Value(ValueMessage),
     Echo(EchoMessage),
@@ -16,7 +16,7 @@ impl BroadcastMessage {
     }
 }
 
-#[derive(Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq)]
 pub struct ValueMessage(Proof<Vec<u8>>);
 
 impl ValueMessage {
@@ -37,7 +37,7 @@ impl From<Proof<Vec<u8>>> for ValueMessage {
     }
 }
 
-#[derive(Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq)]
 pub struct EchoMessage(Proof<Vec<u8>>);
 
 impl EchoMessage {
@@ -58,7 +58,7 @@ impl From<Proof<Vec<u8>>> for EchoMessage {
     }
 }
 
-#[derive(Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq)]
 pub struct ReadyMessage(Digest);
 
 impl ReadyMessage {

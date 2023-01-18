@@ -1,6 +1,6 @@
 use crate::{message::BroadcastMessage, node::NodeId};
 
-#[derive(Debug)]
+#[derive(Debug, Clone)]
 pub enum FaultType {
     UnknownSender,
     ReceivedValueFromNonProposer,
@@ -10,6 +10,7 @@ pub enum FaultType {
     InvalidProof,
 }
 
+#[derive(Debug, Clone)]
 pub struct FaultLog<ID: NodeId> {
     pub sender_id: ID,
     pub message: BroadcastMessage,

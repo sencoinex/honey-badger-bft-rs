@@ -6,8 +6,10 @@ pub mod encode;
 pub mod merkle;
 pub mod message;
 pub mod node;
-pub mod state;
 pub mod validator;
+
+mod state;
+pub use state::*;
 
 mod procedure;
 pub use procedure::*;

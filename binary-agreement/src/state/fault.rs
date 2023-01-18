@@ -1,6 +1,6 @@
 use crate::{epoch::Epoch, message::BinaryAgreementMessage, node::NodeId};
 
-#[derive(Debug)]
+#[derive(Debug, Clone)]
 pub enum FaultType {
     UnknownSender,
     EpochMismatched {
@@ -13,6 +13,7 @@ pub enum FaultType {
     InvalidSignatureShare,
 }
 
+#[derive(Debug, Clone)]
 pub struct FaultLog<NID: NodeId> {
     pub sender_id: NID,
     pub message: BinaryAgreementMessage,

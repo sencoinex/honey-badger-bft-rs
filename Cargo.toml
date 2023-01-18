@@ -1,7 +1,7 @@
 [workspace]
 
 members = [
-    # "asynchronous-common-subset",
+    "asynchronous-common-subset",
     "reliable-broadcast",
     "binary-agreement",
     "threshold-crypto",
