@@ -27,21 +27,18 @@ pub trait AsynchronousCommonSubset: fmt::Debug {
     fn my_id(&self) -> &Self::NodeId;
 
     fn create_reliable_broadcast_instance(
-        &self,
-        validator_index: &Self::ValidatorIndex,
+        &mut self,
+        target_id: &Self::NodeId,
     ) -> Self::ReliableBroadcast;
 
-    fn terminate_reliable_broadcast(&self, validator_index: &Self::ValidatorIndex);
+    fn terminate_reliable_broadcast(&self, target_id: &Self::NodeId);
 
     fn create_binary_agreement_instance(
-        &self,
-        validator_index: &Self::ValidatorIndex,
+        &mut self,
+        target_id: &Self::NodeId,
     ) -> Self::BinaryAgreement;
 
-    fn get_binary_agreement_session_id(
-        &self,
-        validator_index: &Self::ValidatorIndex,
-    ) -> Self::SessionId;
+    fn get_binary_agreement_session_id(&self, target_id: &Self::NodeId) -> Self::SessionId;
 
     /// Let {RBCi}N refer to N instances of the reliable broadcast protocol, where Pi is the sender of RBCi.
     /// Let {BAi}N refer to N instances of the binary byzantine agreement protocol.
@@ -70,11 +67,11 @@ pub trait AsynchronousCommonSubset: fmt::Debug {
         let mut rb_threads = BTreeMap::new();
         let mut ba_receive_channels = HashMap::new();
         let mut ba_send_channels = HashMap::new();
-        for (node_id, validator_index) in validator_indices {
+        for (node_id, _validator_index) in validator_indices {
             let (ba_input_sender, ba_input_receiver) = mpsc::channel();
-            ba_receive_channels.insert(validator_index, (node_id.clone(), ba_input_receiver));
+            ba_receive_channels.insert(node_id.clone(), ba_input_receiver);
             ba_send_channels.insert(node_id.clone(), ba_input_sender.clone());
-            let rb_instance = self.create_reliable_broadcast_instance(&validator_index);
+            let rb_instance = self.create_reliable_broadcast_instance(&node_id);
             let validator_set = rb_validator_set.clone();
             let state_for_rb_thread = state.clone();
             let node_id_for_rb_thread = node_id.clone();
@@ -145,9 +142,9 @@ pub trait AsynchronousCommonSubset: fmt::Debug {
             secret_key_share,
             public_key_shares,
         );
-        for (validator_index, (node_id, ba_input_receiver)) in ba_receive_channels {
-            let mut ba_instance = self.create_binary_agreement_instance(&validator_index);
-            let session_id = self.get_binary_agreement_session_id(&validator_index);
+        for (node_id, ba_input_receiver) in ba_receive_channels {
+            let mut ba_instance = self.create_binary_agreement_instance(&node_id);
+            let session_id = self.get_binary_agreement_session_id(&node_id);
             let validator_set = ba_validator_set.clone();
             let validator_key_shares = validator_key_shares.clone();
             let state_for_ba_thread = state.clone();
@@ -192,9 +189,18 @@ pub trait AsynchronousCommonSubset: fmt::Debug {
             ba_threads.insert(node_id, ba_thread);
         }
 
-        // wait for all N RBC & BA instances to complete
+        // wait for all N BA instances to complete
         for (_node_id, ba_thread) in ba_threads {
             let _ = ba_thread.join().unwrap();
+        }
+        // terminate unfinished RB process
+        {
+            let locked_state = state.lock().expect("state mutex cannot be locked...");
+            for (node_id, ba_out) in locked_state.as_binary_agreement_outputs() {
+                if !ba_out.unwrap_or(false) {
+                    self.terminate_reliable_broadcast(node_id);
+                }
+            }
         }
         for (_node_id, rb_thread) in rb_threads {
             let _ = rb_thread.join().unwrap();

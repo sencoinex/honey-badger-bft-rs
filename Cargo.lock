@@ -65,6 +65,7 @@ dependencies = [
  "anyhow",
  "binary-agreement",
  "logger",
+ "rand",
  "reliable-broadcast",
  "thiserror",
  "threshold-crypto",

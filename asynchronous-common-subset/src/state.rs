@@ -23,6 +23,14 @@ impl<ID: NodeId> AsynchronousCommonSubsetState<ID> {
         }
     }
 
+    pub fn into_output(self) -> BTreeMap<ID, Option<Vec<u8>>> {
+        self.reliable_broadcast_outputs
+    }
+
+    pub fn as_reliable_broadcast_outputs(&self) -> &BTreeMap<ID, Option<Vec<u8>>> {
+        &self.reliable_broadcast_outputs
+    }
+
     pub(crate) fn set_reliable_broadcast_state<
         IDX: reliable_broadcast::validator::ValidatorIndex,
     >(
@@ -54,6 +62,10 @@ impl<ID: NodeId> AsynchronousCommonSubsetState<ID> {
 
     pub(crate) fn has_binary_agreement_input(&self, node_id: &ID) -> bool {
         self.binary_agreement_inputs.contains_key(node_id)
+    }
+
+    pub(crate) fn as_binary_agreement_outputs(&self) -> &BTreeMap<ID, Option<bool>> {
+        &self.binary_agreement_outputs
     }
 
     pub(crate) fn set_binary_agreement_state<

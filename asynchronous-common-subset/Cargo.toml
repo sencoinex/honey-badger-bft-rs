@@ -15,4 +15,5 @@ binary-agreement = { path = "../binary-agreement" }
 threshold-crypto = { path = "../threshold-crypto" }
 
 [dev-dependencies]
+rand = "0.8.5"
 logger = { version = "0.1.0", git = "https://github.com/kumanote/logger-rs", branch = "main", features = ["airbrake"] }
