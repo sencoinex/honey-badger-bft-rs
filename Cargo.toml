@@ -1,9 +1,10 @@
 [workspace]
 
 members = [
+    "honey-badger",
     "asynchronous-common-subset",
-    "reliable-broadcast",
     "binary-agreement",
+    "reliable-broadcast",
     "threshold-crypto",
 ]
 

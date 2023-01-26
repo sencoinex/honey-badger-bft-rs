@@ -8,6 +8,7 @@ pub mod hasher;
 pub mod polynomial;
 mod public_key;
 mod secret_key;
+mod serializers;
 mod signature;
 
 pub use cipher_text::Ciphertext;
