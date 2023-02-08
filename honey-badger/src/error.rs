@@ -10,6 +10,8 @@ pub enum Error {
     BatchTransactionsSerializationError,
     #[error("BatchTransactionsSerializationError: {cause:?}")]
     EncryptedBatchTransactionsSerializationError { cause: bincode::ErrorKind },
+    #[error("DecryptDecryptionSharesError: {cause:?}")]
+    DecryptDecryptionSharesError { cause: threshold_crypto::Error },
 }
 
 impl From<reliable_broadcast::Error> for Error {
