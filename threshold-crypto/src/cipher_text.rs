@@ -1,11 +1,16 @@
 use crate::hasher;
 use bls12_381::{pairing, G1Affine, G1Projective, G2Projective};
 use core::hash;
-use std::cmp::Ordering;
 use group::Curve;
+use serde::{Deserialize, Serialize};
+use std::cmp::Ordering;
 
-#[derive(Debug, Clone, PartialEq, Eq)]
-pub struct Ciphertext(G1Projective, Vec<u8>, G2Projective);
+#[derive(Deserialize, Serialize, Debug, Clone, PartialEq, Eq)]
+pub struct Ciphertext(
+    #[serde(with = "crate::serializers::g1_projective")] G1Projective,
+    Vec<u8>,
+    #[serde(with = "crate::serializers::g2_projective")] G2Projective,
+);
 
 impl Ciphertext {
     pub fn new(g1: G1Projective, msg: Vec<u8>, g2: G2Projective) -> Self {

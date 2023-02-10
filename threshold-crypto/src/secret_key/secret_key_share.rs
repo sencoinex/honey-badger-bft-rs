@@ -26,4 +26,9 @@ impl SecretKeyShare {
         let g1_affine = ct.as_g1().to_affine();
         Some(DecryptionShare::new(g1_affine.mul(*self.0)))
     }
+
+    pub fn decrypt_share_force(&self, ct: &Ciphertext) -> DecryptionShare {
+        let g1_affine = ct.as_g1().to_affine();
+        DecryptionShare::new(g1_affine.mul(*self.0))
+    }
 }

@@ -47,6 +47,12 @@ impl<ID: NodeId> AsynchronousCommonSubsetState<ID> {
         self.reliable_broadcast_outputs.insert(node_id, output);
     }
 
+    pub fn as_reliable_broadcast_fault_logs(
+        &self,
+    ) -> &BTreeMap<ID, Vec<reliable_broadcast::FaultLog<ID>>> {
+        &self.reliable_broadcast_fault_logs
+    }
+
     fn set_reliable_broadcast_fault_logs(
         &mut self,
         node_id: ID,
@@ -83,6 +89,12 @@ impl<ID: NodeId> AsynchronousCommonSubsetState<ID> {
 
     fn set_binary_agreement_output(&mut self, node_id: ID, output: Option<bool>) {
         self.binary_agreement_outputs.insert(node_id, output);
+    }
+
+    pub fn as_binary_agreement_fault_logs(
+        &self,
+    ) -> &BTreeMap<ID, Vec<binary_agreement::FaultLog<ID>>> {
+        &self.binary_agreement_fault_logs
     }
 
     fn set_binary_agreement_fault_logs(
