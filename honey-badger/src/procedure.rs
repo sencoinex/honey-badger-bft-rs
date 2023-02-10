@@ -1,12 +1,18 @@
 use crate::{
     BatchTransactions, DecryptionShareFaultLog, DecryptionShareFaultType, DecryptionShareMessage,
     Epoch, Error, FaultLog, NodeId, NodeMessage, Result, Transaction, ValidatorIndex,
+    VerifiedTransactions,
 };
 use asynchronous_common_subset::AsynchronousCommonSubset;
 use core::fmt;
 use rand::Rng;
 use std::collections::BTreeMap;
 use threshold_crypto::{Ciphertext, DecryptionShare, PublicKeyShares, SecretKeyShare};
+
+pub struct HoneyBadgerOutput<ID: NodeId, TX: Transaction> {
+    pub verified_transactions: VerifiedTransactions<TX>,
+    pub fault_logs: Vec<FaultLog<ID>>,
+}
 
 pub trait HoneyBadger: fmt::Debug {
     type NodeId: NodeId + 'static;
@@ -41,7 +47,7 @@ pub trait HoneyBadger: fmt::Debug {
         validator_indices: BTreeMap<Self::NodeId, Self::ValidatorIndex>,
         secret_key_share: SecretKeyShare,
         public_key_shares: PublicKeyShares,
-    ) -> Result<()> {
+    ) -> Result<HoneyBadgerOutput<Self::NodeId, Self::Transaction>> {
         let mut fault_logs: Vec<FaultLog<Self::NodeId>> = Vec::new();
 
         let contribution_bytes = transactions
@@ -191,7 +197,18 @@ pub trait HoneyBadger: fmt::Debug {
             computed_plan_text_contributions.insert(proposer_id, plain_text);
         }
 
-        // TODO combine & sort transactions outputted by the process above -> block!
-        todo!()
+        // combine & sort transactions outputted by the process above -> block!
+        let mut verified_transactions: VerifiedTransactions<Self::Transaction> =
+            VerifiedTransactions::new(epoch.clone());
+        for (_proposer_id, contribution_bytes) in computed_plan_text_contributions {
+            let tx = Self::Transaction::try_from(contribution_bytes)
+                .map_err(|_| Error::VerifiedTransactionDeserializationError)?;
+            verified_transactions.add_transaction(tx);
+        }
+
+        Ok(HoneyBadgerOutput {
+            verified_transactions,
+            fault_logs,
+        })
     }
 }
